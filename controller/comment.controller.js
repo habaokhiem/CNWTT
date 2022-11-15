@@ -1,5 +1,5 @@
 const connection = require("../database");
-module.exports.setComment = (req, res) => {
+module.exports.set_comment = (req, res) => {
   const {
     id_post,
     id_user_comment,
@@ -8,7 +8,8 @@ module.exports.setComment = (req, res) => {
     status,
     date_create,
     date_update,
-  } = req.body;
+  } = req.query;
+  console.log("req: ", req.query);
   connection.query(
     "INSERT INTO comment VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
     [
@@ -31,8 +32,9 @@ module.exports.setComment = (req, res) => {
     }
   );
 };
-module.exports.editComment = (req, res) => {
-  const { id, comment, image, status } = req.body;
+module.exports.edit_comment = (req, res) => {
+  const { id, comment, image, status } = req.query;
+  console.log("req.query: ", req.query);
   connection.query(
     "UPDATE comment SET comment = ?, image = ?, status = ? WHERE id = ?",
     [comment, image, status, id],

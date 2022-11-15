@@ -1,6 +1,7 @@
 const connection = require("../database");
+const moment = require("moment/moment");
 
-module.exports.reportPost = (req, res) => {
+module.exports.list_report_post = (req, res) => {
   connection.query(
     "SELECT * from report_post",
     function (error, results, fields) {
@@ -13,11 +14,13 @@ module.exports.reportPost = (req, res) => {
     }
   );
 };
-module.exports.createReport = (req, res) => {
-  const { id_post, report, id_user, id_user_report } = req.body;
+module.exports.report_post = (req, res) => {
+  const { id_post, report_body, id_user_report } = req.query;
+  console.log("req.query: ", req.query);
+  const curTime = new Date(moment().add(7, "hours"));
   connection.query(
     "INSERT INTO report_post VALUES (?, ?, ?, ?, ?)",
-    [null, id_post, report, id_user, id_user_report],
+    [null, id_post, report_body, id_user_report, curTime],
     function (error, results, fields) {
       if (error) throw error;
       res.send({

@@ -1,6 +1,8 @@
+const md5 = require("md5");
 const connection = require("../database");
 module.exports.update_info = (req, res) => {
-  const { username, password, email, SDT } = req.body;
+  const { username, password, email, SDT } = req.query;
+  console.log("req.query: ", req.query);
 
   if (SDT.length === 10) {
     connection.query(
@@ -18,9 +20,10 @@ module.exports.update_info = (req, res) => {
             return;
           }
         }
+        const hashPassword = md5(password);
         connection.query(
           "UPDATE user SET password = ?, email = ?, SDT = ? WHERE username = ?",
-          [password, email, SDT, username],
+          [hashPassword, email, SDT, username],
           function (error, results, fields) {
             if (error) throw error;
             res.send({

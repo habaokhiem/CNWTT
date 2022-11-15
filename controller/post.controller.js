@@ -2,13 +2,13 @@ const connection = require("../database");
 const moment = require("moment");
 const { sortBy } = require("lodash");
 
-module.exports.getListPost = (req, res) => {
+module.exports.get_list_posts = (req, res) => {
   connection.query("SELECT * from post", function (error, results, fields) {
     if (error) throw error;
     res.send(results);
   });
 };
-module.exports.getPost = (req, res) => {
+module.exports.get_post = (req, res) => {
   const { id } = req.params;
   connection.query(
     "SELECT * from post WHERE id = ? ",
@@ -16,11 +16,18 @@ module.exports.getPost = (req, res) => {
     function (error, results, fields) {
       if (error) throw error;
       if (results.length > 0) {
-        res.send({
-          status: 200,
-          message: "Danh sách bài viết:",
-          results: results,
-        });
+        connection.query(
+          "SELECT * from post_like WHERE id_post = ? ",
+          [id],
+          function (error, resultsLike, fields) {
+            if (error) throw error;
+            res.send({
+              status: 200,
+              message: "Thông tin bài viểt:",
+              results: [{ ...results[0], listLikes: resultsLike }],
+            });
+          }
+        );
       } else {
         res.send({
           status: 400,
@@ -31,8 +38,9 @@ module.exports.getPost = (req, res) => {
     }
   );
 };
-module.exports.createPost = (req, res) => {
-  const { id, id_user, body, status, image } = req.body;
+module.exports.add_post = (req, res) => {
+  const { id, id_user, body, status, image } = req.query;
+  console.log("req.query: ", req.query);
   const curTime = new Date(moment().add(7, "hours"));
   connection.query("SELECT * from post", function (error, results, fields) {
     if (error) throw error;
@@ -50,8 +58,9 @@ module.exports.createPost = (req, res) => {
     );
   });
 };
-module.exports.editPost = (req, res) => {
-  const { id, body, status, image } = req.body;
+module.exports.edit_post = (req, res) => {
+  const { id, body, status, image } = req.query;
+  console.log("req.query: ", req.query);
   const curTime = new Date(moment().add(7, "hours"));
   connection.query(
     "UPDATE post SET body = ?, image = ?, status = ?, date_update = ? WHERE id = ?",
@@ -66,8 +75,9 @@ module.exports.editPost = (req, res) => {
     }
   );
 };
-module.exports.deletePost = (req, res) => {
-  const { id } = req.body;
+module.exports.delete_post = (req, res) => {
+  const { id } = req.query;
+  console.log("req.query: ", req.query);
   connection.query(
     "DELETE from post WHERE id = ?",
     [id],
@@ -81,7 +91,7 @@ module.exports.deletePost = (req, res) => {
     }
   );
 };
-module.exports.checkNewItem = (req, res) => {
+module.exports.check_new_item = (req, res) => {
   connection.query("SELECT * from post", function (error, results, fields) {
     sortListPost = sortBy(results, "date_update").reverse();
     if (error) throw error;

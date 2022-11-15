@@ -1,8 +1,9 @@
 const connection = require("../database");
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
-module.exports.register = (req, res) => {
-  const { username, password, email, SDT } = req.body;
+module.exports.signUp = (req, res) => {
+  const { username, password, email, SDT } = req.query;
+  console.log("req: ", req.query);
   connection.query("SELECT * from user", function (error, results, fields) {
     if (error) throw error;
     for (let i = 0; i < results.length; i++) {
@@ -35,7 +36,8 @@ module.exports.register = (req, res) => {
   });
 };
 module.exports.login = (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.query;
+  console.log("req: ", req.query);
   const hashPassword = md5(password);
   connection.query("SELECT * from user", function (error, results, fields) {
     if (error) throw error;
@@ -81,7 +83,8 @@ module.exports.login = (req, res) => {
   });
 };
 module.exports.logout = (req, res) => {
-  const { token } = req.body;
+  // const { token } = req.query;
+  const token = req.header("token");
   connection.query(
     "DELETE from token WHERE token = ?",
     [token],
