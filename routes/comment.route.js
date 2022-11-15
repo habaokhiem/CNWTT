@@ -1,16 +1,16 @@
 const express = require("express");
 const {
-  setComment,
-  editComment,
+  set_comment,
+  edit_comment,
   deleteComment,
 } = require("../controller/comment.controller");
 const connection = require("../database");
 const verifyToken = require("../validate/authentication");
 const router = express.Router();
 
-router.post("/setComment", verifyToken, setComment);
+router.post("/set-comment", verifyToken, set_comment);
 
-router.post("/editComment", verifyToken, editComment);
+router.post("/edit-comment", verifyToken, edit_comment);
 
 router.post("/deleteComment", verifyToken, deleteComment);
 

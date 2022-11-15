@@ -2,13 +2,13 @@ const express = require("express");
 const verifyToken = require("../validate/authentication");
 const router = express.Router();
 const {
-  register,
+  signUp,
   login,
   logout,
 } = require("../controller/authentication.controller");
 require("dotenv").config();
 
-router.post("/register", register);
+router.post("/signup", signUp);
 
 router.post("/login", login);
 

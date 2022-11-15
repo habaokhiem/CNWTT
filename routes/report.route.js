@@ -1,10 +1,13 @@
 const express = require("express");
-const { reportPost, createReport } = require("../controller/report.controller");
+const {
+  list_report_post,
+  report_post,
+} = require("../controller/report.controller");
 const verifyToken = require("../validate/authentication");
 const router = express.Router();
 
-router.get("/reportPost", verifyToken, reportPost);
+router.get("/list-report-post", verifyToken, list_report_post);
 
-router.post("/createReport", verifyToken, createReport);
+router.post("/report-post", verifyToken, report_post);
 
 module.exports = router;

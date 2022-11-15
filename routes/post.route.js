@@ -2,25 +2,25 @@ const express = require("express");
 const verifyToken = require("../validate/authentication");
 const router = express.Router();
 const {
-  getListPost,
-  getPost,
-  createPost,
-  editPost,
-  deletePost,
-  checkNewItem,
+  get_list_posts,
+  get_post,
+  add_post,
+  edit_post,
+  delete_post,
+  check_new_item,
 } = require("../controller/post.controller");
 //VerifyToken = middleware
-router.get("/listPost", verifyToken, getListPost);
+router.get("/get-list-posts", verifyToken, get_list_posts);
 
-router.get("/getPost/:id", verifyToken, getPost);
+router.get("/get-post/:id", verifyToken, get_post);
 
-router.post("/createPost", verifyToken, createPost);
+router.post("/add-post", verifyToken, add_post);
 
-router.post("/editPost", verifyToken, editPost);
+router.post("/edit-post", verifyToken, edit_post);
 
-router.post("/deletePost", verifyToken, deletePost);
+router.post("/delete-post", verifyToken, delete_post);
 
 /*-----------------------------------------------CHECK NEW ITEMS-------------------------------------- */
-router.get("/checkNewItem", verifyToken, checkNewItem);
+router.get("/check-new-item", verifyToken, check_new_item);
 
 module.exports = router;

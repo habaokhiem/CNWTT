@@ -1,15 +1,9 @@
 const express = require("express");
-const {
-  getLike,
-  createLike,
-  countLikePost,
-} = require("../controller/like.controller");
+const { like, get_list_posts_like } = require("../controller/like.controller");
 const verifyToken = require("../validate/authentication");
 const router = express.Router();
 
-router.post("/", verifyToken, getLike);
+router.post("/", verifyToken, like);
 
-router.post("/createLike", verifyToken, createLike);
-
-router.post("/countLikePost", verifyToken, countLikePost);
+router.post("/get-list-posts-like", verifyToken, get_list_posts_like);
 module.exports = router;

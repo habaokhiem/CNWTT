@@ -4,6 +4,6 @@ const verifyToken = require("../validate/authentication");
 const router = express.Router();
 
 /*-----------------------------------------------USER-------------------------------------- */
-router.post("/update_info", verifyToken, update_info);
+router.post("/update-info", verifyToken, update_info);
 
 module.exports = router;
