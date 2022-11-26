@@ -2,13 +2,13 @@ const moment = require("moment/moment");
 const connection = require("../database");
 
 module.exports.like = (req, res) => {
-  const { id_post, type, emotion, id_user } = req.query;
+  const { id_post, type, status, id_user } = req.query;
   console.log("req.query: ", req.query);
   if (type == 1) {
     const curTime = new Date(moment().add(7, "hours"));
     connection.query(
       "INSERT INTO post_like VALUES (?, ?, ?, ?, ?, ?)",
-      [null, id_post, 1, emotion, id_user, curTime],
+      [null, id_post, 1, status, id_user, curTime],
       function (error, results, fields) {
         if (error) throw error;
         connection.query(

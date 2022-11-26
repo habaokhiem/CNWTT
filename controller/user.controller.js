@@ -1,7 +1,7 @@
 const md5 = require("md5");
 const connection = require("../database");
 module.exports.update_info = (req, res) => {
-  const { username, password, email, SDT } = req.query;
+  const { username, name, password, email, SDT, avatar, online } = req.query;
   console.log("req.query: ", req.query);
 
   if (SDT.length === 10) {
@@ -13,7 +13,7 @@ module.exports.update_info = (req, res) => {
         for (let i = 0; i < results.length; i++) {
           if (email === results[i].email || SDT === results[i].SDT) {
             res.send({
-              status: 409,
+              status: 9996,
               message: "TK đã tồn tại",
               results: [],
             });
@@ -22,12 +22,12 @@ module.exports.update_info = (req, res) => {
         }
         const hashPassword = md5(password);
         connection.query(
-          "UPDATE user SET password = ?, email = ?, SDT = ? WHERE username = ?",
-          [hashPassword, email, SDT, username],
+          "UPDATE user SET name = ?, password = ?, email = ?, SDT = ?, avatar = ?, online = ? WHERE username = ?",
+          [name, hashPassword, email, SDT, avatar, online, username],
           function (error, results, fields) {
             if (error) throw error;
             res.send({
-              status: 200,
+              status: 1000,
               message: "Sửa thành công!",
               results: [],
             });
@@ -37,7 +37,7 @@ module.exports.update_info = (req, res) => {
     );
   } else {
     res.send({
-      status: 400,
+      status: 9996,
       message: "Yêu cầu nhập lại SDT",
       results: [],
     });
